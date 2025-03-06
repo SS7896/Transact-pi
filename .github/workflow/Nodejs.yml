@@ -1,13 +1,25 @@
-name: Node.js CI
-   on: [push, pull_request]
-   jobs:
-     build:
-       runs-on: ubuntu-latest
-       steps:
-       - uses: actions/checkout@v2
-       - name: Install Node.js
-         uses: actions/setup-node@v2
-         with:
-           node-version: '18'
-       - run: npm ci
-       - run: npm test
+name: Node.js CI  # 工作流名称（显示在 GitHub Actions 界面）
+on:               # 触发条件
+  push:            # 代码推送时触发
+    branches: [ "main" ]
+  pull_request:    # 创建 Pull Request 时触发
+    branches: [ "main" ]
+
+jobs:             # 定义任务
+  test:           # 任务名称（可自定义）
+    runs-on: ubuntu-latest  # 运行环境
+
+    steps:        # 任务步骤
+    - name: Checkout code  # 步骤1：拉取代码
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js  # 步骤2：安装 Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18   # 指定 Node.js 版本
+
+    - name: Install dependencies  # 步骤3：安装依赖
+      run: npm ci                 # 严格按 package-lock.json 安装
+
+    - name: Run tests             # 步骤4：执行测试
+      run: npm test
